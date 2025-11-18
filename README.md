@@ -13,3 +13,6 @@ Follow these steps to install and run the project:
 **Clone the repository:**
    ```bash
    git clone https://github.com/u004226-ctrl/GetMyID.git
+
+
+Or just use a ready-made option — the @GetMyID61BOT bot.
