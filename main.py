@@ -14,7 +14,6 @@ router = Router()
 
 @router.message(Command('start'))
 async def welcome(message: types.Message):
-    print('hi')
     user_id = message.from_user.id
     user_first_name = message.from_user.first_name
     user_last_name = message.from_user.last_name
@@ -22,7 +21,7 @@ async def welcome(message: types.Message):
     language = message.from_user.language_code
     is_bot = message.from_user.is_bot
 
-    add_user(user_id, user_first_name, user_last_name, username, language, is_bot)
+    await add_user(user_id, user_first_name, user_last_name, username, language, is_bot)
 
     await message.answer(text=f'Hi!\nYour ID: `{user_id}`', parse_mode='Markdown')
 

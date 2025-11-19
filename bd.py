@@ -1,17 +1,13 @@
-import sqlite3
-from datetime import datetime
+import aiosqlite
 from record_log import log_info, log_error
 
 DB_FILE = 'bd.db'
 
-def initialize_database():
+async def initialize_database():
     try:
         log_info('Initializing database')
-        with sqlite3.connect(DB_FILE) as conn:
-            cursor = conn.cursor()
-
-            # Users table
-            cursor.execute(
+        async with aiosqlite.connect(DB_FILE) as conn:
+            await conn.execute(
                 '''
                 CREATE TABLE IF NOT EXISTS Users (
                     id INTEGER PRIMARY KEY,
@@ -20,7 +16,7 @@ def initialize_database():
                     username TEXT,
                     language TEXT,
                     is_bot INTEGER NOT NULL,
-                    datetime_reg DATETIME NOT NULL,
+                    datetime_reg DATETIME DEFAULT CURRENT_TIMESTAMP,
                     last_message_time DATETIME
                 )
                 '''
@@ -30,35 +26,35 @@ def initialize_database():
     except Exception as e:
         log_error(f"Error initializing database: {e}")
 
-def add_user(user_id, user_first_name, user_last_name, username, language, is_bot):
+
+
+async def add_user(user_id, user_first_name, user_last_name, username, language, is_bot):
     try:
         log_info(f'Updating/adding user {user_id}')
-        now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-        with sqlite3.connect(DB_FILE) as conn:
-            cursor = conn.cursor()
-            cursor.execute('SELECT id FROM Users WHERE id = ?', (user_id,))
-            user = cursor.fetchone()
+        async with aiosqlite.connect(DB_FILE) as conn:
+            cursor = await conn.cursor()
+            await cursor.execute('SELECT id FROM Users WHERE id = ?', (user_id,))
+            user = await cursor.fetchone()
 
             if user is None:
-                cursor.execute(
+                await cursor.execute(
                     '''
-                    INSERT INTO Users (id, user_first_name, user_last_name, username, language, is_bot, datetime_reg, last_message_time)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                    ''', (user_id, user_first_name, user_last_name, username, language, is_bot, now, now)
+                    INSERT INTO Users (id, user_first_name, user_last_name, username, language, is_bot, last_message_time)
+                    VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)
+                    ''', (user_id, user_first_name, user_last_name, username, language, is_bot)
                 )
+
             else:
-                cursor.execute(
+                await cursor.execute(
                     '''
                     UPDATE Users
-                    SET user_first_name = ?, user_last_name = ?, username = ?, language = ?, is_bot = ?, last_message_time = ?
+                    SET user_first_name = ?, user_last_name = ?, username = ?, language = ?, is_bot = ?, last_message_time = CURRENT_TIMESTAMP
                     WHERE id = ?
-                    ''', (user_first_name, user_last_name, username, language, is_bot, now, user_id)
+                    ''', (user_first_name, user_last_name, username, language, is_bot, user_id)
                 )
 
         log_info(f'User {user_id} successfully updated/added')
 
     except Exception as e:
         log_error(f'Error adding/updating user {user_id}: {e}')
-
-initialize_database()
