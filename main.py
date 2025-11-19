@@ -44,7 +44,7 @@ async def main():
         except Exception as e:
             log_error(f"An error occurred: {e}")
             await asyncio.sleep(5)
-            continue # restart
+            continue
 
 
 
