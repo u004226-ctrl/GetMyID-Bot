@@ -1,18 +1,24 @@
-# GetMyID Bot
+# GetMyID Bot 🤖
 
-A simple Telegram bot that helps users obtain their unique identifier and saves their information in a database.
+A simple Telegram bot that responds with your unique user ID upon starting the bot. It also employs spam protection by allowing responses only once every three minutes. 🚫
 
-## Description
+## Features 🌟
 
-This bot allows users to easily get their ID in Telegram. When using the `/start` command, the bot greets the user and saves their information such as first name, last name, language, and bot status.
+- Provides a unique user ID when the user starts the bot. 🆔
+- Spam protection to avoid abuse. 🔒
+- Handles stickers and responds with their ID. 🎨
+- Open source; contributions are welcome. 📂
 
-## Installation
+## Requirements ✅
 
-Follow these steps to install and run the project:
+- Python 3.7 or higher
+- aiogram library
+- A Telegram bot token (available from [BotFather](https://t.me/botfather))
 
-**Clone the repository:**
+## Installation 🛠️
+
+1. **Clone the repository:**
+
    ```bash
-   git clone https://github.com/u004226-ctrl/GetMyID.git
-   ```
-
-Or just use a ready-made option — the @GetMyID61BOT bot.
+   git clone https://github.com/u004226-ctrl/GetMyID-Bot.git
+   cd GetMyID-Bot
