@@ -17,7 +17,7 @@ initialize_database()
 
 
 @router.message(Command('start'))
-async def welcome(message: types.Message):
+async def index(message: types.Message):
     user_id = message.from_user.id
     user_first_name = message.from_user.first_name
     user_last_name = message.from_user.last_name
